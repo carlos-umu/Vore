@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "aWTivLuF01Y=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\carlo\\Desktop\\github\\Vore\\Vore\\Vore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\carlo\\.nuget\\packages\\raylib-cs\\7.0.2\\raylib-cs.7.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -12,19 +12,33 @@ public class GameScreen
    private static int playerY = 100;
    private static int playerSpeed = 20;
    private static int radius = 20;
-   private static int score = 0;
+   
 
    /*Food Attributes*/
-   private static int foodX = 300;
-   private static int foodY = 300;
+   private static int score = 0;
    private static int foodRadius = 10;
+   private static int maxFood = 5;
+   private static List<Vector2> foodPositions = new List<Vector2>();
 
-
-
+   /*Other Attributes*/
    private static Random randomGenerator = new Random();
+   private static bool firstTime = true;
 
    public static GameState Update(int width, int height)
    {
+      /*Generate Food Positions*/
+      if(firstTime)
+      {
+         for(int i = 0; i < maxFood; i++)
+         {
+            int foodX = randomGenerator.Next(foodRadius, width - radius);
+            int foodY = randomGenerator.Next(foodRadius, height - radius);
+            foodPositions.Add(new Vector2(foodX, foodY));
+         }
+         firstTime = false;
+      }
+
+
       /*Right and Left Movement inside the window*/
       if(Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D)){ playerX += playerSpeed;}
       if(Raylib.IsKeyDown(KeyboardKey.Left) || Raylib.IsKeyDown(KeyboardKey.A)){ playerX -= playerSpeed;}
@@ -41,25 +55,26 @@ public class GameScreen
 
       /*Collision between player and food*/
       Vector2 playerPosition = new Vector2(playerX, playerY);
-      Vector2 foodPosition = new Vector2(foodX, foodY);
 
-      if(Raylib.CheckCollisionCircles(playerPosition, radius, foodPosition, foodRadius))
-      {
-         score+=10;
-         /*Relocate food to a random position */
-         foodX = randomGenerator.Next(foodRadius, width - radius);
-         foodY = randomGenerator.Next(foodRadius, height - radius);
-      }
+      for (int i = foodPositions.Count - 1; i >= 0; i--)
+        {
+            if (Raylib.CheckCollisionCircles(playerPosition, radius, foodPositions[i], foodRadius))
+            {
+                score += 10;           
+                foodPositions.RemoveAt(i);   
+            }
+        }
 
     return GameState.Playing;
    }
 
    public static void Draw()
    {
-    Raylib.DrawCircle(foodX, foodY, foodRadius, Color.Green);
-     Raylib.DrawCircle(foodX, foodY, foodRadius, Color.Yellow);
-      Raylib.DrawCircle(foodX, foodY, foodRadius, Color.Gray);
-       Raylib.DrawCircle(foodX, foodY, foodRadius, Color.White);
+   
+    foreach(Vector2 foodPosition in foodPositions)
+    {
+      Raylib.DrawCircle((int)foodPosition.X, (int)foodPosition.Y, foodRadius, Color.Green);
+    }
        
     Raylib.DrawCircle(playerX, playerY, radius, Color.Red);
     Raylib.DrawText("Use Arrow Keys or WASD to Move", 100, 100, 20, Color.White);

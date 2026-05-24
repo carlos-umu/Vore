@@ -10,8 +10,9 @@ public class GameScreen
    /*Player Attributes*/
    private static int playerX = 100;
    private static int playerY = 100;
-   private static int playerSpeed = 20;
+   private static int playerSpeed = 5;
    private static int radius = 20;
+   private static int hitboxRadius = 12;
 
 
    /*Food Attributes*/
@@ -23,41 +24,68 @@ public class GameScreen
    private static List<Vector2> foodPositions = new List<Vector2>();
 
    /*Enemy Attributes*/
-   private static int enemySpeed = 5;
+   private static int enemySpeed = 3;
    private static int enemyRadius = 20;
+   private static int enemyHitboxRadius = 14;
    private static int maxEnemy = 5;
    private static List<Vector2> enemyPositions = new List<Vector2>();
 
    /*Walls Attributes*/
    private static List<Rectangle> walls = new List<Rectangle>();
+   private static List<Vector2> whiteSpaces = new List<Vector2>();
 
    /*Other Attributes*/
    private static Random randomGenerator = new Random();
    private static bool firstTime = true;
+   private static int nivelActual = 10;
 
    public static GameState Update(int width, int height)
    {
-      /*Generate Food Positions*/
       if (firstTime)
       {
-         for (int i = 0; i < maxFood; i++)
+         string[][] allLevels = new string[][]
          {
-            int foodX = randomGenerator.Next(foodRadius, width - radius);
-            int foodY = randomGenerator.Next(foodRadius, height - radius);
-            foodPositions.Add(new Vector2(foodX, foodY));
-         }
+             Levels.level1, Levels.level2, Levels.level3, Levels.level4, Levels.level5,
+             Levels.level6, Levels.level7, Levels.level8, Levels.level9, Levels.level10
+         };
 
-         for (int i = 0; i < maxEnemy; i++)
-         {
-            int enemyX = randomGenerator.Next(enemyRadius, width - enemyRadius);
-            int enemyY = randomGenerator.Next(enemyRadius, height - enemyRadius);
-            enemyPositions.Add(new Vector2(enemyX, enemyY));
-         }
+         string[] currentMap = allLevels[nivelActual - 1];
 
          walls.Clear();
-         walls.Add(new Rectangle(400, 200, 50, 700));
-         walls.Add(new Rectangle(1400, 200, 50, 700));
-         walls.Add(new Rectangle(700, 500, 500, 50));
+         whiteSpaces.Clear();
+         int titleSize = 60;
+
+         /*Read level Data*/
+         for (int row = 0; row < currentMap.Length; row++)
+         {
+            for (int col = 0; col < currentMap[row].Length; col++)
+            {
+               char square = currentMap[row][col];
+               int posX = col * titleSize;
+               int posY = row * titleSize;
+               if (square == 'X')
+               {
+                  walls.Add(new Rectangle(posX, posY, titleSize, titleSize));
+               }
+               else if (square == ' ')
+               {
+                  whiteSpaces.Add(new Vector2(posX + titleSize / 2, posY + titleSize / 2));
+               }
+            }
+         }
+         /*Generate Food Positions ONLY in white spaces*/
+         for (int i = 0; i < maxFood; i++)
+         {
+            int gap = randomGenerator.Next(whiteSpaces.Count);
+            foodPositions.Add(whiteSpaces[gap]);
+         }
+
+         /*Generate Enemy Positions ONLY in white spaces*/
+         for (int i = 0; i < maxEnemy; i++)
+         {
+            int gap = randomGenerator.Next(whiteSpaces.Count);
+            enemyPositions.Add(whiteSpaces[gap]);
+         }
 
          firstTime = false;
       }
@@ -89,7 +117,7 @@ public class GameScreen
       foreach (Rectangle wal in walls)
       {
          /*Check ActualX with FutureY*/
-         if (Raylib.CheckCollisionCircleRec(new Vector2(nextX, playerY), radius, wal)) { collisionX = true; break; }
+         if (Raylib.CheckCollisionCircleRec(new Vector2(nextX, playerY), enemyHitboxRadius, wal)) { collisionX = true; break; }
       }
       if (!collisionX) { playerX = nextX; }
 
@@ -97,7 +125,7 @@ public class GameScreen
       foreach (Rectangle wal in walls)
       {
          /*Check ActualY with FutureX*/
-         if (Raylib.CheckCollisionCircleRec(new Vector2(playerX, nextY), radius, wal)) { collisionY = true; break; }
+         if (Raylib.CheckCollisionCircleRec(new Vector2(playerX, nextY), enemyHitboxRadius, wal)) { collisionY = true; break; }
       }
       if (!collisionY) { playerY = nextY; }
 
@@ -113,9 +141,9 @@ public class GameScreen
             score += scorePerFood;
             foodPositions.RemoveAt(i);
 
-            int randomX = randomGenerator.Next(foodRadius, width - radius);
-            int randomY = randomGenerator.Next(foodRadius, height - radius);
-            foodPositions.Add(new Vector2(randomX, randomY));
+            /*When food is eaten, generate a new one in a random white space*/
+            int randomGap = randomGenerator.Next(whiteSpaces.Count);
+            foodPositions.Add(whiteSpaces[randomGap]);
          }
       }
 
@@ -165,6 +193,7 @@ public class GameScreen
       }
 
       return GameState.Playing;
+
    }
 
    public static void Draw()
@@ -180,7 +209,7 @@ public class GameScreen
       }
       foreach (Rectangle wall in walls)
       {
-         Raylib.DrawRectangleRec(wall, Color.Gray);
+         Raylib.DrawRectangleRec(wall, Color.Pink);
       }
 
       Raylib.DrawCircle(playerX, playerY, radius, Color.Red);

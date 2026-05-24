@@ -10,7 +10,7 @@ public class Launcher
         //int fontSize = 50;
         string title = "Vore";
         //string author = "By: @9C";
-        
+
 
         Raylib.InitWindow(width, height, title);
         Raylib.SetTargetFPS(60);
@@ -18,7 +18,7 @@ public class Launcher
 
         while (!Raylib.WindowShouldClose())
         {
-            if(currentState == GameState.Menu)
+            if (currentState == GameState.Menu)
             {
                 currentState = MenuScreen.Update(width, height);
             }
@@ -34,11 +34,11 @@ public class Launcher
             {
                 currentState = GameOverScreen.Update(width, height);
             }
-            
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.Black);
 
-            if(currentState == GameState.Menu)
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Blue);
+
+            if (currentState == GameState.Menu)
             {
                 MenuScreen.Draw(width, height);
             }
@@ -54,7 +54,7 @@ public class Launcher
             {
                 GameOverScreen.Draw(width, height);
             }
-            
+
             Raylib.EndDrawing();
         }
 

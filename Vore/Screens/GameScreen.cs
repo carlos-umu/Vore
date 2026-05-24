@@ -7,9 +7,13 @@ using Raylib_cs;
 
 public class GameScreen
 {
+   /*Sprites and Textures*/
+   private static Texture2D playerSprite;
+   private static bool recursosCargados = false;
+
    /*Player Attributes*/
-   private static int playerX = 100;
-   private static int playerY = 100;
+   private static int playerX = 150;
+   private static int playerY = 150;
    private static int playerSpeed = 5;
    private static int radius = 20;
    private static int hitboxRadius = 12;
@@ -37,10 +41,16 @@ public class GameScreen
    /*Other Attributes*/
    private static Random randomGenerator = new Random();
    private static bool firstTime = true;
-   private static int nivelActual = 10;
+   private static int nivelActual = 1;
 
    public static GameState Update(int width, int height)
    {
+      if (!recursosCargados)
+      {
+         playerSprite = Raylib.LoadTexture("../../../Assets/IconoPlayer.png");
+         recursosCargados = true;
+      }
+
       if (firstTime)
       {
          string[][] allLevels = new string[][]
@@ -117,7 +127,7 @@ public class GameScreen
       foreach (Rectangle wal in walls)
       {
          /*Check ActualX with FutureY*/
-         if (Raylib.CheckCollisionCircleRec(new Vector2(nextX, playerY), enemyHitboxRadius, wal)) { collisionX = true; break; }
+         if (Raylib.CheckCollisionCircleRec(new Vector2(nextX, playerY), hitboxRadius, wal)) { collisionX = true; break; }
       }
       if (!collisionX) { playerX = nextX; }
 
@@ -125,7 +135,7 @@ public class GameScreen
       foreach (Rectangle wal in walls)
       {
          /*Check ActualY with FutureX*/
-         if (Raylib.CheckCollisionCircleRec(new Vector2(playerX, nextY), enemyHitboxRadius, wal)) { collisionY = true; break; }
+         if (Raylib.CheckCollisionCircleRec(new Vector2(playerX, nextY), hitboxRadius, wal)) { collisionY = true; break; }
       }
       if (!collisionY) { playerY = nextY; }
 
@@ -180,6 +190,7 @@ public class GameScreen
          /* Collision between player and enemy */
          if (Raylib.CheckCollisionCircles(playerPosition, radius, enemyPosition, enemyRadius))
          {
+            nivelActual = 1;
             RestartGame();
             return GameState.GameOver;
          }
@@ -188,8 +199,18 @@ public class GameScreen
       /*Win Condition*/
       if (score >= maxScore)
       {
-         RestartGame();
-         return GameState.Win;
+         nivelActual++;
+         if (nivelActual > 10)
+         {
+            nivelActual = 1;
+            RestartGame();
+            return GameState.Win;
+         }
+         else
+         {
+            RestartGame();
+            return GameState.Playing;
+         }
       }
 
       return GameState.Playing;
@@ -212,7 +233,7 @@ public class GameScreen
          Raylib.DrawRectangleRec(wall, Color.Pink);
       }
 
-      Raylib.DrawCircle(playerX, playerY, radius, Color.Red);
+      Raylib.DrawTexture(playerSprite, playerX - radius, playerY - radius, Color.White);
       Raylib.DrawText("Use Arrow Keys or WASD to Move", 100, 100, 20, Color.White);
       Raylib.DrawText($"Score: {score}", 1800, 100, 20, Color.Green);
    }
@@ -221,8 +242,8 @@ public class GameScreen
    {
       firstTime = true;
       score = 0;
-      playerX = 100;
-      playerY = 100;
+      playerX = 150;
+      playerY = 150;
       foodPositions.Clear();
       enemyPositions.Clear();
    }

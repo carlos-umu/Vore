@@ -48,7 +48,10 @@ public class MenuScreen
                 return GameState.Playing;
             }
         }
-        
+        if (Raylib.IsKeyPressed(KeyboardKey.Enter))
+        {
+            return GameState.Playing;
+        }        
         return GameState.Menu;
        
     }

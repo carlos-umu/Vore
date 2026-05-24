@@ -7,9 +7,9 @@ public class Launcher
         //Atributes of the window
         int width = 1920;
         int height = 1080;
-        int fontSize = 50;
+        //int fontSize = 50;
         string title = "Vore";
-        string author = "By: @9C";
+        //string author = "By: @9C";
         
 
         Raylib.InitWindow(width, height, title);
@@ -24,7 +24,7 @@ public class Launcher
             }
             else if (currentState == GameState.Playing)
             {
-                currentState = GameScreen.Update();
+                currentState = GameScreen.Update(width, height);
             }
 
             Raylib.BeginDrawing();

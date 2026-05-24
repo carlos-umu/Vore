@@ -28,6 +28,8 @@ public class GameScreen
    private static int maxEnemy = 5;
    private static List<Vector2> enemyPositions = new List<Vector2>();
 
+   /*Walls Attributes*/
+   private static List<Rectangle> walls = new List<Rectangle>();
 
    /*Other Attributes*/
    private static Random randomGenerator = new Random();
@@ -52,16 +54,13 @@ public class GameScreen
             enemyPositions.Add(new Vector2(enemyX, enemyY));
          }
 
+         walls.Clear();
+         walls.Add(new Rectangle(400, 200, 50, 700));
+         walls.Add(new Rectangle(1400, 200, 50, 700));
+         walls.Add(new Rectangle(700, 500, 500, 50));
+
          firstTime = false;
       }
-
-
-      /*Right and Left Movement inside the window*/
-      if (Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D)) { playerX += playerSpeed; }
-      if (Raylib.IsKeyDown(KeyboardKey.Left) || Raylib.IsKeyDown(KeyboardKey.A)) { playerX -= playerSpeed; }
-      /*Up and Down Movement inside the window*/
-      if (Raylib.IsKeyDown(KeyboardKey.Up) || Raylib.IsKeyDown(KeyboardKey.W)) { playerY -= playerSpeed; }
-      if (Raylib.IsKeyDown(KeyboardKey.Down) || Raylib.IsKeyDown(KeyboardKey.S)) { playerY += playerSpeed; }
 
       /*Prevent player from going outside the window*/
       if (playerX - radius < 0) { playerX = radius; }
@@ -69,6 +68,40 @@ public class GameScreen
       /*TODO CHAPUZA MOCKEADO EL 1O*/
       if (playerY - radius < 0) { playerY = radius + 20; }
       if (playerY + radius > height) { playerY = height - radius; }
+
+
+      /*Calculate next position for collision with walls*/
+
+      int nextX = playerX;
+      int nextY = playerY;
+
+      if (Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D)) { nextX += playerSpeed; }
+      if (Raylib.IsKeyDown(KeyboardKey.Left) || Raylib.IsKeyDown(KeyboardKey.A)) { nextX -= playerSpeed; }
+      if (Raylib.IsKeyDown(KeyboardKey.Up) || Raylib.IsKeyDown(KeyboardKey.W)) { nextY -= playerSpeed; }
+      if (Raylib.IsKeyDown(KeyboardKey.Down) || Raylib.IsKeyDown(KeyboardKey.S)) { nextY += playerSpeed; }
+
+      if (nextX - radius < 0) { nextX = radius; }
+      if (nextX + radius > width) { nextX = width - radius; }
+      if (nextY - radius < 0) { nextY = radius + 20; }
+      if (nextY + radius > height) { nextY = height - radius; }
+
+      bool collisionX = false;
+      foreach (Rectangle wal in walls)
+      {
+         /*Check ActualX with FutureY*/
+         if (Raylib.CheckCollisionCircleRec(new Vector2(nextX, playerY), radius, wal)) { collisionX = true; break; }
+      }
+      if (!collisionX) { playerX = nextX; }
+
+      bool collisionY = false;
+      foreach (Rectangle wal in walls)
+      {
+         /*Check ActualY with FutureX*/
+         if (Raylib.CheckCollisionCircleRec(new Vector2(playerX, nextY), radius, wal)) { collisionY = true; break; }
+      }
+      if (!collisionY) { playerY = nextY; }
+
+
 
       /*Collision between player and food*/
       Vector2 playerPosition = new Vector2(playerX, playerY);
@@ -90,30 +123,39 @@ public class GameScreen
       for (int i = 0; i < enemyPositions.Count; i++)
       {
          Vector2 enemyPosition = enemyPositions[i];
-         if (enemyPosition.X < playerX) { enemyPosition.X += enemySpeed; }
-         if (enemyPosition.X > playerX) { enemyPosition.X -= enemySpeed; }
-         if (enemyPosition.Y < playerY) { enemyPosition.Y += enemySpeed; }
-         if (enemyPosition.Y > playerY) { enemyPosition.Y -= enemySpeed; }
+
+         float nextEnemX = enemyPosition.X;
+         float nextEnemY = enemyPosition.Y;
+
+         if (enemyPosition.X < playerX) { nextEnemX += enemySpeed; }
+         if (enemyPosition.X > playerX) { nextEnemX -= enemySpeed; }
+         if (enemyPosition.Y < playerY) { nextEnemY += enemySpeed; }
+         if (enemyPosition.Y > playerY) { nextEnemY -= enemySpeed; }
+
+         bool enemColX = false;
+         foreach (Rectangle wal in walls)
+         {
+            if (Raylib.CheckCollisionCircleRec(new Vector2(nextEnemX, enemyPosition.Y), enemyRadius, wal)) { enemColX = true; break; }
+         }
+         if (!enemColX) { enemyPosition.X = nextEnemX; }
+
+
+         bool enemColY = false;
+         foreach (Rectangle wal in walls)
+         {
+            if (Raylib.CheckCollisionCircleRec(new Vector2(enemyPosition.X, nextEnemY), enemyRadius, wal)) { enemColY = true; break; }
+         }
+         if (!enemColY) { enemyPosition.Y = nextEnemY; }
+
          enemyPositions[i] = enemyPosition;
 
+         /* Collision between player and enemy */
          if (Raylib.CheckCollisionCircles(playerPosition, radius, enemyPosition, enemyRadius))
          {
             RestartGame();
             return GameState.GameOver;
          }
       }
-
-      /*Collision between player and enemy*/
-      for (int i = 0; i < enemyPositions.Count; i++)
-      {
-         Vector2 enemyPosition = enemyPositions[i];
-         if (Raylib.CheckCollisionCircles(playerPosition, radius, enemyPosition, enemyRadius))
-         {
-            RestartGame();
-            return GameState.GameOver;
-         }
-      }
-
 
       /*Win Condition*/
       if (score >= maxScore)
@@ -135,6 +177,10 @@ public class GameScreen
       foreach (Vector2 enemyPosition in enemyPositions)
       {
          Raylib.DrawCircle((int)enemyPosition.X, (int)enemyPosition.Y, enemyRadius, Color.Yellow);
+      }
+      foreach (Rectangle wall in walls)
+      {
+         Raylib.DrawRectangleRec(wall, Color.Gray);
       }
 
       Raylib.DrawCircle(playerX, playerY, radius, Color.Red);

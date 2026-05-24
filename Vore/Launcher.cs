@@ -30,6 +30,10 @@ public class Launcher
             {
                 currentState = WinScreen.Update(width, height);
             }
+            else if (currentState == GameState.GameOver)
+            {
+                currentState = GameOverScreen.Update(width, height);
+            }
             
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
@@ -46,7 +50,11 @@ public class Launcher
             {
                 WinScreen.Draw(width, height);
             }
-
+            else if (currentState == GameState.GameOver)
+            {
+                GameOverScreen.Draw(width, height);
+            }
+            
             Raylib.EndDrawing();
         }
 

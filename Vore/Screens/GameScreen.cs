@@ -16,6 +16,8 @@ public class GameScreen
 
    /*Food Attributes*/
    private static int score = 0;
+   private static int scorePerFood = 10;
+   private static int maxScore = 40;
    private static int foodRadius = 10;
    private static int maxFood = 5;
    private static List<Vector2> foodPositions = new List<Vector2>();
@@ -60,10 +62,26 @@ public class GameScreen
         {
             if (Raylib.CheckCollisionCircles(playerPosition, radius, foodPositions[i], foodRadius))
             {
-                score += 10;           
+                score += scorePerFood;           
                 foodPositions.RemoveAt(i);   
+
+                int randomX = randomGenerator.Next(foodRadius, width - radius);
+                int randomY = randomGenerator.Next(foodRadius, height - radius);
+                foodPositions.Add(new Vector2(randomX, randomY));
             }
         }
+
+      /*Win Condition*/
+      if (score >= maxScore)
+      {
+         firstTime = true;
+         score = 0;
+         playerX = 100;
+         playerY = 100;
+         foodPositions.Clear();
+        
+          return GameState.Win;
+      }
 
     return GameState.Playing;
    }

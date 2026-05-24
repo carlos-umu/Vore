@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Vore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+789eaa44c03b60a0873ebf8b8c3b21e1181ccc0d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b567e0b554d4650473c436379e9d16198855263")]
 [assembly: System.Reflection.AssemblyProductAttribute("Vore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Vore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

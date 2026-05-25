@@ -10,6 +10,7 @@ public class GameScreen
    /*Sprites and Textures*/
    private static Texture2D playerSprite;
    private static Texture2D wallSprite;
+   private static Texture2D foodSprite;
    private static bool recursosCargados = false;
 
    /*Player Attributes*/
@@ -24,15 +25,15 @@ public class GameScreen
    private static int score = 0;
    private static int scorePerFood = 10;
    private static int maxScore = 40;
-   private static int foodRadius = 10;
-   private static int maxFood = 5;
+   private static int foodRadius = 20;
+   private static int maxFood = 50;
    private static List<Vector2> foodPositions = new List<Vector2>();
 
    /*Enemy Attributes*/
    private static int enemySpeed = 3;
    private static int enemyRadius = 20;
    private static int enemyHitboxRadius = 14;
-   private static int maxEnemy = 5;
+   private static int maxEnemy = 1;
    private static List<Vector2> enemyPositions = new List<Vector2>();
 
    /*Walls Attributes*/
@@ -48,8 +49,9 @@ public class GameScreen
    {
       if (!recursosCargados)
       {
-         playerSprite = Raylib.LoadTexture("../../../Assets/RedCube.png");
-         wallSprite = Raylib.LoadTexture("../../../Assets/Wall1.png");
+         playerSprite = Raylib.LoadTexture("../../../Assets/FirstPlayer.png");
+         wallSprite = Raylib.LoadTexture("../../../Assets/Wall2.png");
+         foodSprite = Raylib.LoadTexture("../../../Assets/BurgerFood.png");
          recursosCargados = true;
       }
 
@@ -221,21 +223,38 @@ public class GameScreen
 
    public static void Draw()
    {
-
+      /*Food Draw Part*/
       foreach (Vector2 foodPosition in foodPositions)
       {
-         Raylib.DrawCircle((int)foodPosition.X, (int)foodPosition.Y, foodRadius, Color.Green);
+         int foodSize = 50; /*Force to 50X50 pixels*/
+
+         Rectangle source = new Rectangle(0, 0, foodSprite.Width, foodSprite.Height);
+         Rectangle dest = new Rectangle(foodPosition.X, foodPosition.Y, foodSize, foodSize);
+         Vector2 origin = new Vector2(foodSize / 2, foodSize / 2);
+
+         Raylib.DrawTexturePro(foodSprite, source, dest, origin, 0f, Color.White);
       }
+
       foreach (Vector2 enemyPosition in enemyPositions)
       {
          Raylib.DrawCircle((int)enemyPosition.X, (int)enemyPosition.Y, enemyRadius, Color.Yellow);
       }
+
       foreach (Rectangle wall in walls)
       {
          Raylib.DrawTexture(wallSprite, (int)wall.X, (int)wall.Y, Color.White);
       }
 
-      Raylib.DrawTexture(playerSprite, playerX - radius, playerY - radius, Color.White);
+      /*Player Draw Part*/
+      int playerSize = 60; /*Force to 60x60 pixels*/
+      Rectangle sourcePlayer = new Rectangle(0, 0, playerSprite.Width, playerSprite.Height);
+      Rectangle destPlayer = new Rectangle(playerX, playerY, playerSize, playerSize);
+      Vector2 originPlayer = new Vector2(playerSize / 2, playerSize / 2);
+      Raylib.DrawTexturePro(playerSprite, sourcePlayer, destPlayer, originPlayer, 0f, Color.White);
+
+
+
+
       Raylib.DrawText("Use Arrow Keys or WASD to Move", 100, 100, 20, Color.White);
       Raylib.DrawText($"Score: {score}", 1800, 100, 20, Color.Green);
    }

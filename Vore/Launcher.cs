@@ -1,4 +1,5 @@
-﻿using Raylib_cs;
+﻿using System.Numerics;
+using Raylib_cs;
 
 public class Launcher
 {
@@ -13,6 +14,7 @@ public class Launcher
 
 
         Raylib.InitWindow(width, height, title);
+        Raylib.ToggleFullscreen();
         Raylib.SetTargetFPS(60);
         GameState currentState = GameState.Menu;
 
@@ -38,6 +40,12 @@ public class Launcher
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Blue);
 
+            /*Background Load*/
+            Texture2D background = Raylib.LoadTexture("../../../Assets/Background.jpg");
+            Rectangle sourceFondo = new Rectangle(0, 0, background.Width, background.Height);
+            Rectangle destFondo = new Rectangle(0, 0, width, height);
+            Raylib.DrawTexturePro(background, sourceFondo, destFondo, new Vector2(0, 0), 0f, Color.White);
+
             if (currentState == GameState.Menu)
             {
                 MenuScreen.Draw(width, height);
@@ -57,6 +65,7 @@ public class Launcher
 
             Raylib.EndDrawing();
         }
+
 
         Raylib.CloseWindow();
     }

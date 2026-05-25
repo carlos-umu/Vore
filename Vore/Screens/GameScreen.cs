@@ -18,7 +18,7 @@ public class GameScreen
    private static int playerY = 150;
    private static int playerSpeed = 5;
    private static int radius = 20;
-   private static int hitboxRadius = 12;
+   private static int hitboxRadius = 26;
 
 
    /*Food Attributes*/
@@ -49,9 +49,9 @@ public class GameScreen
    {
       if (!recursosCargados)
       {
-         playerSprite = Raylib.LoadTexture("../../../Assets/FirstPlayer.png");
+         playerSprite = Raylib.LoadTexture("../../../Assets/ThirdPlayer.png");
          wallSprite = Raylib.LoadTexture("../../../Assets/Wall2.png");
-         foodSprite = Raylib.LoadTexture("../../../Assets/BurgerFood.png");
+         foodSprite = Raylib.LoadTexture("../../../Assets/BlueFood.png");
          recursosCargados = true;
       }
 
@@ -246,7 +246,7 @@ public class GameScreen
       }
 
       /*Player Draw Part*/
-      int playerSize = 60; /*Force to 60x60 pixels*/
+      int playerSize = 55; /*Force to 55x55 pixels*/
       Rectangle sourcePlayer = new Rectangle(0, 0, playerSprite.Width, playerSprite.Height);
       Rectangle destPlayer = new Rectangle(playerX, playerY, playerSize, playerSize);
       Vector2 originPlayer = new Vector2(playerSize / 2, playerSize / 2);

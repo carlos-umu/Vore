@@ -41,11 +41,12 @@ public class Launcher
             Raylib.ClearBackground(Color.Blue);
 
             /*Background Load*/
-            Texture2D background = Raylib.LoadTexture("../../../Assets/Background.jpg");
-            Rectangle sourceFondo = new Rectangle(0, 0, background.Width, background.Height);
-            Rectangle destFondo = new Rectangle(0, 0, width, height);
-            Raylib.DrawTexturePro(background, sourceFondo, destFondo, new Vector2(0, 0), 0f, Color.White);
+            //Texture2D background = Raylib.LoadTexture("../../../Assets/Background.jpg");
+            //Rectangle sourceFondo = new Rectangle(0, 0, background.Width, background.Height);
+            //Rectangle destFondo = new Rectangle(0, 0, width, height);
+            //Raylib.DrawTexturePro(background, sourceFondo, destFondo, new Vector2(0, 0), 0f, Color.White);
 
+            Raylib.ClearBackground(Color.Black);
             if (currentState == GameState.Menu)
             {
                 MenuScreen.Draw(width, height);

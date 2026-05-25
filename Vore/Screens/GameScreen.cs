@@ -1,8 +1,4 @@
-﻿/*
-TODO: SEGUIR POR AQUI
-*/
-
-using System.Numerics;
+﻿using System.Numerics;
 using Raylib_cs;
 
 public class GameScreen
@@ -26,7 +22,7 @@ public class GameScreen
    /*Food Attributes*/
    private static int score = 0;
    private static int scorePerFood = 10;
-   private static int maxScore = 40;
+   private static int maxScore = 400;
    private static int foodRadius = 20;
    private static int maxFood = 50;
    private static List<Vector2> foodPositions = new List<Vector2>();
@@ -52,7 +48,7 @@ public class GameScreen
       if (!recursosCargados)
       {
          playerSprite = Raylib.LoadTexture("../../../Assets/ThirdPlayer.png");
-         wallSprite = Raylib.LoadTexture("../../../Assets/Wall2.png");
+         wallSprite = Raylib.LoadTexture("../../../Assets/Wall3.png");
          foodSprite = Raylib.LoadTexture("../../../Assets/BlueFood.png");
          enemySprite = Raylib.LoadTexture("../../../Assets/EnemyPlayer.png");
          recursosCargados = true;
@@ -251,7 +247,16 @@ public class GameScreen
 
       foreach (Rectangle wall in walls)
       {
-         Raylib.DrawTexture(wallSprite, (int)wall.X, (int)wall.Y, Color.White);
+
+         Rectangle sourceWall = new Rectangle(0, 0, wallSprite.Width, wallSprite.Height);
+
+         // 2. La ESTIRAMOS para que mida exactamente 60x60 (el tamaño físico de wall)
+         Rectangle destWall = new Rectangle(wall.X, wall.Y, wall.Width, wall.Height);
+
+         // 3. Origen en 0,0 para que no se desplace de su coordenada original
+         Vector2 originWall = new Vector2(0, 0);
+
+         Raylib.DrawTexturePro(wallSprite, sourceWall, destWall, originWall, 0f, Color.White);
       }
 
       /*Player Draw Part*/

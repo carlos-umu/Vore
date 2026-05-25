@@ -9,6 +9,7 @@ public class GameScreen
 {
    /*Sprites and Textures*/
    private static Texture2D playerSprite;
+   private static Texture2D wallSprite;
    private static bool recursosCargados = false;
 
    /*Player Attributes*/
@@ -47,7 +48,8 @@ public class GameScreen
    {
       if (!recursosCargados)
       {
-         playerSprite = Raylib.LoadTexture("../../../Assets/IconoPlayer.png");
+         playerSprite = Raylib.LoadTexture("../../../Assets/RedCube.png");
+         wallSprite = Raylib.LoadTexture("../../../Assets/Wall1.png");
          recursosCargados = true;
       }
 
@@ -230,7 +232,7 @@ public class GameScreen
       }
       foreach (Rectangle wall in walls)
       {
-         Raylib.DrawRectangleRec(wall, Color.Pink);
+         Raylib.DrawTexture(wallSprite, (int)wall.X, (int)wall.Y, Color.White);
       }
 
       Raylib.DrawTexture(playerSprite, playerX - radius, playerY - radius, Color.White);

@@ -11,12 +11,14 @@ public class GameScreen
    private static Texture2D playerSprite;
    private static Texture2D wallSprite;
    private static Texture2D foodSprite;
+   private static Texture2D enemySprite;
+
    private static bool recursosCargados = false;
 
    /*Player Attributes*/
    private static int playerX = 150;
    private static int playerY = 150;
-   private static int playerSpeed = 5;
+   private static int playerSpeed = 10;
    private static int radius = 20;
    private static int hitboxRadius = 26;
 
@@ -33,7 +35,7 @@ public class GameScreen
    private static int enemySpeed = 3;
    private static int enemyRadius = 20;
    private static int enemyHitboxRadius = 14;
-   private static int maxEnemy = 1;
+   private static int maxEnemy = 5;
    private static List<Vector2> enemyPositions = new List<Vector2>();
 
    /*Walls Attributes*/
@@ -52,6 +54,7 @@ public class GameScreen
          playerSprite = Raylib.LoadTexture("../../../Assets/ThirdPlayer.png");
          wallSprite = Raylib.LoadTexture("../../../Assets/Wall2.png");
          foodSprite = Raylib.LoadTexture("../../../Assets/BlueFood.png");
+         enemySprite = Raylib.LoadTexture("../../../Assets/EnemyPlayer.png");
          recursosCargados = true;
       }
 
@@ -237,7 +240,13 @@ public class GameScreen
 
       foreach (Vector2 enemyPosition in enemyPositions)
       {
-         Raylib.DrawCircle((int)enemyPosition.X, (int)enemyPosition.Y, enemyRadius, Color.Yellow);
+
+         int enemySize = 55; /*Force to 55X55 pixels*/
+         Rectangle source = new Rectangle(0, 0, enemySprite.Width, enemySprite.Height);
+         Rectangle dest = new Rectangle(enemyPosition.X, enemyPosition.Y, enemySize, enemySize);
+         Vector2 origin = new Vector2(enemySize / 2, enemySize / 2);
+
+         Raylib.DrawTexturePro(enemySprite, source, dest, origin, 0f, Color.White);
       }
 
       foreach (Rectangle wall in walls)

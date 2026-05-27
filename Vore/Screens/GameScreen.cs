@@ -97,7 +97,8 @@ public class GameScreen
       if (player.Score >= maxScore)
       {
          nivelActual++;
-         return GameState.LevelSelector;
+         RestartGame();
+         return GameState.Win;
       }
 
       return GameState.Playing;

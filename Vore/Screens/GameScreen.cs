@@ -17,7 +17,7 @@ public class GameScreen
    private static int nivelActual = 1;
 
    /*Game Settings*/
-   private static int scorePerFood = 20;
+   private static int scorePerFood = 10;
    private static int maxScore = 100;
    private static int maxFood = 50;
    private static int maxEnemy = 5;
@@ -112,7 +112,31 @@ public class GameScreen
       player.Draw();
 
       Raylib.DrawText("Use Arrow Keys or WASD to Move", 100, 100, 20, Color.White);
-      Raylib.DrawText($"Score: {player.Score}", 1800, 100, 20, Color.Green);
+
+      /*Progress Bar Logic*/
+      float progress = Math.Clamp((float)player.Score / maxScore, 0f, 1f);
+      int barWidth = 400;
+      int barHeight = 35;
+      int barX = Raylib.GetScreenWidth() / 2 - barWidth / 2;
+      int barY = 25;
+
+      Rectangle barBackground = new Rectangle(barX, barY, barWidth, barHeight);
+      Rectangle barFill = new Rectangle(barX, barY, (int)(barWidth * progress), barHeight);
+
+      Raylib.DrawRectangleRounded(barBackground, 0.5f, 10, new Color(0, 0, 0, 180));
+
+      if (progress > 0)
+      {
+         Raylib.DrawRectangleRounded(barFill, 0.5f, 10, Color.Lime);
+      }
+
+      Raylib.DrawRectangleRoundedLines(barBackground, 0.5f, 10, Color.White);
+
+      string scoreText = $"{player.Score} / {maxScore}";
+      int textWidth = Raylib.MeasureText(scoreText, 25);
+
+      Color textColor = progress > 0.6f ? Color.Black : Color.White;
+      Raylib.DrawText(scoreText, barX + (barWidth / 2) - (textWidth / 2), barY + 5, 25, textColor);
    }
 
    public static void RestartGame()

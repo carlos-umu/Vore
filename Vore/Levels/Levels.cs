@@ -1,7 +1,7 @@
 
 public class Levels
 {
-    // Tu nivel 1 original
+
     public static string[] level1 = new string[]
     {
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -24,7 +24,6 @@ public class Levels
         "X                              X" // Zona UI
     };
 
-    // Nivel 2: Los Cuadrantes
     public static string[] level2 = new string[]
     {
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -47,7 +46,6 @@ public class Levels
         "X                              X"
     };
 
-    // Nivel 3: La Espiral (Cuidado con los atascos)
     public static string[] level3 = new string[]
     {
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -70,7 +68,6 @@ public class Levels
         "X                              X"
     };
 
-    // Nivel 4: Pasillos Horizontales
     public static string[] level4 = new string[]
     {
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -93,7 +90,6 @@ public class Levels
         "X                              X"
     };
 
-    // Nivel 5: La Ciudad (Bloques Pequeños)
     public static string[] level5 = new string[]
     {
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -116,24 +112,23 @@ public class Levels
         "X                              X"
     };
 
-    // Nivel 6: La Fortaleza Concentrica
     public static string[] level6 = new string[]
     {
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "X                              X",
-        "X   XXXXXXXXXXXXXXXXXXXXXXXX   X",
+        "X   XX XXXXXXXXX XXXXXXXXXXX   X",
         "X   X                      X   X",
         "X   X   XXXXXXXXXXXXXXXX   X   X",
         "X   X   X              X   X   X",
-        "X   X   X   XXXXXXXX   X   X   X",
+        "X   X   X   XXXX   X   X   X   X",
+        "X       X   X      X   X   X   X",
         "X   X   X   X      X   X   X   X",
         "X   X   X   X      X   X   X   X",
-        "X   X   X   X      X   X   X   X",
-        "X   X   X   XXXXXXXX   X   X   X",
-        "X   X   X              X   X   X",
-        "X   X   XXXXXXXXXXXXXXXX   X   X",
+        "X   X   X   XX   XXX   X   X   X",
+        "X       X              X   X   X",
+        "X   X   XXXXXXX   XXXXXX   X   X",
         "X   X                      X   X",
-        "X   XXXXXXXXXXXXXXXXXXXXXXXX   X",
+        "X   XXXXXXXXX   XXXXXXXXXXXX   X",
         "X                              X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "X                              X"
@@ -168,15 +163,15 @@ public class Levels
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "X                              X",
         "X     XX       XX       XX     X",
-        "X    XXXX     XXXX     XXXX    X",
+        "X    XXXX              XXXX    X",
         "X   XX  XX   XX  XX   XX  XX   X",
-        "X  XX    XX XX    XX XX    XX  X",
-        "X XX      XXX      XXX      XX X",
+        "X  XX             XX XX    XX  X",
+        "X         XXX      XXX      XX X",
         "X XX      XXX      XXX      XX X",
         "X  XX    XX XX    XX XX    XX  X",
         "X   XX  XX   XX  XX   XX  XX   X",
-        "X    XXXX     XXXX     XXXX    X",
-        "X     XX       XX       XX     X",
+        "X    X  X     X  X     X  X    X",
+        "X                              X",
         "X    XXXX     XXXX     XXXX    X",
         "X   XX  XX   XX  XX   XX  XX   X",
         "X  XX    XX XX    XX XX    XX  X",
@@ -193,15 +188,15 @@ public class Levels
         "X  X   XXXX   XXXX   XXXX   XX X",
         "X  X   X  X   X  X   X  X   X  X",
         "X  X   X  X   X  X   X  X   X  X",
+        "X  X   X      X  X          X  X",
+        "X  X   X  X   X  X   X  X   X  X",
+        "X  X   X  X   X  X   X  X   X  X",
+        "X  X      X   X  X   X      X  X",
         "X  X   X  X   X  X   X  X   X  X",
         "X  X   X  X   X  X   X  X   X  X",
         "X  X   X  X   X  X   X  X   X  X",
         "X  X   X  X   X  X   X  X   X  X",
-        "X  X   X  X   X  X   X  X   X  X",
-        "X  X   X  X   X  X   X  X   X  X",
-        "X  X   X  X   X  X   X  X   X  X",
-        "X  X   X  X   X  X   X  X   X  X",
-        "X  XXXXX  XXXXX  XXXXX  XXXXX  X",
+        "X  X  X  XXXXX  XXXXX  XXXXX  X",
         "X                              X",
         "X                              X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -229,5 +224,10 @@ public class Levels
         "X                              X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "X                              X"
+    };
+    public static string[][] AllLevels = new string[][]
+    {
+        level1, level2, level3, level4, level5,
+        level6, level7, level8, level9, level10
     };
 }

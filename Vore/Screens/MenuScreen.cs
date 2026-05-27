@@ -46,12 +46,12 @@ public class MenuScreen
         {
             if (Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
-                return GameState.Playing;
+                return GameState.LevelSelector;
             }
         }
         if (Raylib.IsKeyPressed(KeyboardKey.Enter))
         {
-            return GameState.Playing;
+            return GameState.LevelSelector;
         }
         return GameState.Menu;
 

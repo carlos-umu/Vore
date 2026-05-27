@@ -29,8 +29,7 @@ public class GameScreen
       /*Generation of Level*/
       if (firstTime)
       {
-         string[][] allLevels = new string[][] { Levels.level1, Levels.level2, Levels.level3, Levels.level4, Levels.level5, Levels.level6, Levels.level7, Levels.level8, Levels.level9, Levels.level10 };
-         string[] currentMap = allLevels[nivelActual - 1];
+         string[] currentMap = Levels.AllLevels[nivelActual - 1];
 
          walls.Clear();
          whiteSpaces.Clear();
@@ -89,7 +88,6 @@ public class GameScreen
 
          if (Raylib.CheckCollisionCircles(playerPos, player.Radius, new Vector2(enemy.X, enemy.Y), enemy.Radius))
          {
-            nivelActual = 1;
             RestartGame();
             return GameState.GameOver;
          }
@@ -99,17 +97,7 @@ public class GameScreen
       if (player.Score >= maxScore)
       {
          nivelActual++;
-         if (nivelActual > 10)
-         {
-            nivelActual = 1;
-            RestartGame();
-            return GameState.Win;
-         }
-         else
-         {
-            RestartGame();
-            return GameState.Playing;
-         }
+         return GameState.LevelSelector;
       }
 
       return GameState.Playing;
@@ -133,5 +121,10 @@ public class GameScreen
       player.ResetPosition(150, 150);
       foods.Clear();
       enemies.Clear();
+   }
+   public static void SetNivel(int nivel)
+   {
+      nivelActual = nivel;
+      RestartGame();
    }
 }

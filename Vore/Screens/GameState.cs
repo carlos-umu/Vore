@@ -4,5 +4,6 @@ public enum GameState
     Menu,
     Playing,
     GameOver,
-    Win
+    Win,
+    LevelSelector
 }

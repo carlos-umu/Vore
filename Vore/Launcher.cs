@@ -24,6 +24,10 @@ public class Launcher
             {
                 currentState = MenuScreen.Update(width, height);
             }
+            else if (currentState == GameState.LevelSelector)
+            {
+                currentState = LevelSelectorScreen.Update(width, height);
+            }
             else if (currentState == GameState.Playing)
             {
                 currentState = GameScreen.Update(width, height);
@@ -50,6 +54,10 @@ public class Launcher
             if (currentState == GameState.Menu)
             {
                 MenuScreen.Draw(width, height);
+            }
+            else if (currentState == GameState.LevelSelector)
+            {
+                LevelSelectorScreen.Draw(width, height);
             }
             else if (currentState == GameState.Playing)
             {

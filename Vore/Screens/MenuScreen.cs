@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Numerics;
 using Raylib_cs;
 
@@ -7,41 +7,57 @@ public class MenuScreen
     /*Only draw on screen*/
     public static void Draw(int width, int height)
     {
+        Raylib.DrawRectangle(0, 0, width, height, new Color(0, 0, 0, 150));
 
-        int titleY = height / 2 - 15;
-        Rectangle PlayButton = new Rectangle(width / 2 - 100, titleY + 80, 200, 50);
+        string title = "V O R E";
+        int titleSize = 130;
+        int titleX = width / 2 - Raylib.MeasureText(title, titleSize) / 2;
+        int titleY = height / 4;
 
-        int titleX = width / 2 - Raylib.MeasureText("Vore", 30) / 2;
-        Raylib.DrawText("Vore", titleX, titleY, 30, Color.Red);
+        /*Shadow of the title*/
+        Raylib.DrawText(title, titleX + 8, titleY + 8, titleSize, Color.Black);
+        Raylib.DrawText(title, titleX, titleY, titleSize, Color.Red);
 
-        /*Button Hover*/
-        Vector2 mousePosition = Raylib.GetMousePosition();
-        Color buttonColor = Color.Red;
+        /*Play button*/
+        int btnWidth = 350;
+        int btnHeight = 80;
+        Rectangle playButton = new Rectangle(width / 2 - btnWidth / 2, height / 2 + 50, btnWidth, btnHeight);
 
-        if (Raylib.CheckCollisionPointRec(mousePosition, PlayButton))
-        {
-            buttonColor = Color.Orange;
-        }
+        Vector2 mousePos = Raylib.GetMousePosition();
+        bool isHovering = Raylib.CheckCollisionPointRec(mousePos, playButton);
 
-        Raylib.DrawRectangleRec(PlayButton, buttonColor);
-        int playWidth = Raylib.MeasureText("PLAY", 20);
-        Raylib.DrawText("PLAY", width / 2 - playWidth / 2, titleY + 95, 20, Color.White);
+        Color btnColor = isHovering ? Color.Red : Color.Red;
+        Color textColor = isHovering ? Color.Black : Color.White;
 
+        Raylib.DrawRectangleRounded(playButton, 0.4f, 10, btnColor);
 
-        Raylib.DrawText("By: @9C", 1800, 990, 20, Color.Red);
+        string btnText = "P L A Y";
+        int textW = Raylib.MeasureText(btnText, 40);
+        Raylib.DrawText(btnText, (int)playButton.X + (btnWidth - textW) / 2, (int)playButton.Y + 20, 40, textColor);
 
+        /*Pulsating "Press Enter" text*/
+        double time = Raylib.GetTime();
+        int alpha = (int)((Math.Sin(time * 5) + 1.0) * 127.5);
+        Color pulseColor = new Color(255, 255, 255, alpha);
+
+        string enterText = "- Press ENTER to Start -";
+        int enterW = Raylib.MeasureText(enterText, 25);
+        Raylib.DrawText(enterText, width / 2 - enterW / 2, (int)playButton.Y + btnHeight + 40, 25, pulseColor);
+
+        /*Credits*/
+        Raylib.DrawText("By: @9C", 30, height - 50, 20, Color.Gray);
+        Raylib.DrawText("Version 1.0", width - 150, height - 50, 20, Color.Gray);
     }
 
     /*Only calculates the game state based on user input*/
     public static GameState Update(int width, int height)
     {
-        int titleY = height / 2 - 15;
-        /*Area of the play button invisible*/
-        Rectangle botonPlay = new Rectangle(width / 2 - 100, titleY + 80, 200, 50);
-        /*Coordinates of the mouse*/
+        int btnWidth = 350;
+        int btnHeight = 80;
+        Rectangle botonPlay = new Rectangle(width / 2 - btnWidth / 2, height / 2 + 50, btnWidth, btnHeight);
+
         Vector2 posicionRaton = Raylib.GetMousePosition();
 
-        /*Logic of the pressed button*/
         if (Raylib.CheckCollisionPointRec(posicionRaton, botonPlay))
         {
             if (Raylib.IsMouseButtonPressed(MouseButton.Left))
@@ -49,12 +65,12 @@ public class MenuScreen
                 return GameState.LevelSelector;
             }
         }
+
         if (Raylib.IsKeyPressed(KeyboardKey.Enter))
         {
             return GameState.LevelSelector;
         }
+
         return GameState.Menu;
-
     }
-
 }

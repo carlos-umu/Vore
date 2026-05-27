@@ -9,24 +9,22 @@ public class LevelSelectorScreen
 
         int totalLevels = Levels.AllLevels.Length;
         int columns = 10;
-        int buttonSize = 100;
+        int radius = 45;
         int spacing = 30;
 
-        int startX = (width - (columns * buttonSize + (columns - 1) * spacing)) / 2;
-        int startY = 300;
+        int cellSize = (radius * 2) + spacing;
+
+        int startX = (width - (columns * cellSize - spacing)) / 2 + radius;
+        int startY = 300 + radius;
 
         for (int i = 0; i < totalLevels; i++)
         {
             int row = i / columns;
             int col = i % columns;
 
-            Rectangle buttonRec = new Rectangle(
-                startX + col * (buttonSize + spacing),
-                startY + row * (buttonSize + spacing),
-                buttonSize, buttonSize
-            );
+            Vector2 buttonCenter = new Vector2(startX + col * cellSize, startY + row * cellSize);
 
-            if (Raylib.CheckCollisionPointRec(mousePos, buttonRec))
+            if (Raylib.CheckCollisionPointCircle(mousePos, buttonCenter, radius))
             {
                 if (Raylib.IsMouseButtonPressed(MouseButton.Left))
                 {
@@ -43,37 +41,48 @@ public class LevelSelectorScreen
 
     public static void Draw(int width, int height)
     {
-        Raylib.DrawText("SELECCIONA UN NIVEL", width / 2 - 250, 100, 50, Color.Gold);
-        Raylib.DrawText("Pulsa ESC para volver", 50, 50, 20, Color.White);
+        Raylib.DrawRectangle(0, 0, width, height, new Color(0, 0, 0, 150));
+        string titleText = "S E L E C T   A   L E V E L";
+        int titleSize = 50;
+        int titleX = width / 2 - Raylib.MeasureText(titleText, titleSize) / 2;
+
+
+        Raylib.DrawText(titleText, titleX + 4, 80 + 4, titleSize, Color.Black);
+        Raylib.DrawText(titleText, titleX, 80, titleSize, Color.Red);
+        Raylib.DrawText("ESC to exit", 50, 50, 25, Color.Gray);
 
         Vector2 mousePos = Raylib.GetMousePosition();
         int totalLevels = Levels.AllLevels.Length;
         int columns = 10;
-        int buttonSize = 100;
+        int radius = 45;
         int spacing = 30;
 
-        int startX = (width - (columns * buttonSize + (columns - 1) * spacing)) / 2;
-        int startY = 300;
+        int cellSize = (radius * 2) + spacing;
+        int startX = (width - (columns * cellSize - spacing)) / 2 + radius;
+        int startY = 300 + radius;
 
         for (int i = 0; i < totalLevels; i++)
         {
             int row = i / columns;
             int col = i % columns;
 
-            Rectangle buttonRec = new Rectangle(
-                startX + col * (buttonSize + spacing),
-                startY + row * (buttonSize + spacing),
-                buttonSize, buttonSize
-            );
+            Vector2 buttonCenter = new Vector2(startX + col * cellSize, startY + row * cellSize);
 
-            Color btnColor = Raylib.CheckCollisionPointRec(mousePos, buttonRec) ? Color.DarkBlue : Color.Blue;
 
-            Raylib.DrawRectangleRec(buttonRec, btnColor);
-            Raylib.DrawRectangleLinesEx(buttonRec, 4, Color.White);
+            bool isHovering = Raylib.CheckCollisionPointCircle(mousePos, buttonCenter, radius);
+
+            Color btnColor = isHovering ? Color.DarkBlue : Color.Red;
+            Color borderColor = isHovering ? Color.White : Color.White;
+            int borderThickness = isHovering ? 4 : 2;
+
+            Raylib.DrawCircleV(buttonCenter, radius + borderThickness, borderColor);
+
+            Raylib.DrawCircleV(buttonCenter, radius, btnColor);
 
             string levelText = (i + 1).ToString();
             int textWidth = Raylib.MeasureText(levelText, 40);
-            Raylib.DrawText(levelText, (int)buttonRec.X + (buttonSize - textWidth) / 2, (int)buttonRec.Y + 30, 40, Color.White);
+
+            Raylib.DrawText(levelText, (int)buttonCenter.X - textWidth / 2, (int)buttonCenter.Y - 20, 40, Color.White);
         }
     }
 }

@@ -47,3 +47,15 @@ El proyecto presenta una arquitectura modular con 10 niveles progresivos, IA de 
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
 </ItemGroup>
+```
+
+## Estructura del Proyecto
+
+```text
+Vore/
+├── Assets/             # Recursos visuales (.png, .jpg)
+├── Levels/             # Levels.cs (Definición de los 50 niveles)
+├── Screens/            # Lógica de estados (Menu, Game, Win, GameOver)
+├── Launcher.cs         # Punto de entrada y bucle principal
+└── Model/              # Gestión de modelo y SpriteManger
+```

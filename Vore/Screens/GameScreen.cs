@@ -17,8 +17,8 @@ public class GameScreen
    private static int nivelActual = 1;
 
    /*Game Settings*/
-   private static int scorePerFood = 10;
-   private static int maxScore = 400;
+   private static int scorePerFood = 20;
+   private static int maxScore = 100;
    private static int maxFood = 50;
    private static int maxEnemy = 5;
 

@@ -8,7 +8,7 @@ public class LevelSelectorScreen
         Vector2 mousePos = Raylib.GetMousePosition();
 
         int totalLevels = Levels.AllLevels.Length;
-        int columns = 5;
+        int columns = 10;
         int buttonSize = 100;
         int spacing = 30;
 
@@ -48,7 +48,7 @@ public class LevelSelectorScreen
 
         Vector2 mousePos = Raylib.GetMousePosition();
         int totalLevels = Levels.AllLevels.Length;
-        int columns = 5;
+        int columns = 10;
         int buttonSize = 100;
         int spacing = 30;
 
